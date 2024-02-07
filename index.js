@@ -25,7 +25,6 @@ const voiceCallRouter = require("./routes/twilioRoutes");
 app.use("/api/login", authRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/subtasks", subtaskRoutes);
-app.use("/", voiceCallRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
