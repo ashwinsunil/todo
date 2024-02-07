@@ -2,9 +2,9 @@ const cron = require("node-cron");
 const Task = require("./models/Task");
 const User = require("./models/User");
 const twilio = require("twilio");
-
-const accountSid = "ACe7e7cea4a8a3ef56215f70c9b9930966";
-const authToken = "77861b178a761f70cc1234c41c7768d5";
+require("dotenv/config");
+const accountSid = process.env.ACCOUNT_SID;
+const authToken = process.env.AUTH_TOKEN;
 const client = new twilio(accountSid, authToken);
 
 // Cron job to change task priorities based on due_date
@@ -53,7 +53,7 @@ const cronJobs = {
     });
 
     // Cron job for voice calling using Twilio
-    cron.schedule("08 12 * * *", async () => {
+    cron.schedule("33 15 * * *", async () => {
       try {
         // Fetch users based on priority order
         const users = await User.find().sort({ priority: 1 });
@@ -66,13 +66,12 @@ const cronJobs = {
               user: user._id,
               due_date: { $lt: new Date() },
             });
-            console.log(overdueTasks);
 
             if (overdueTasks.length > 0) {
               // Make voice call using Twilio
               await client.calls.create({
                 to: user.phone_number,
-                from: "+16592663604",
+                from: process.env.PHONE_NO,
                 url: "http://demo.twilio.com/docs/voice.xml",
                 method: "POST",
               });

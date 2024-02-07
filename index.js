@@ -1,7 +1,7 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cronJobs = require("./cronJobs");
-
+require("dotenv/config");
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -9,13 +9,10 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json());
 
 // Connect to MongoDB
-mongoose.connect(
-  "mongodb+srv://ashwinskumar01:1@ecommerce.lygo8zf.mongodb.net/?retryWrites=true&w=majority",
-  {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  }
-);
+mongoose.connect(process.env.CONNECTION_STRING, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+});
 
 // Routes
 const taskRoutes = require("./routes/taskroutes");
